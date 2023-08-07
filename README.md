@@ -1,6 +1,5 @@
-# newscrawl-tool
+# Python Web Crawler newscrawl-tool
 a simple Python function using the Newspaper3k library that would crawl a given URL or list of URLs, extracting all the relevant attributes.
-# Python Web Crawler with Newspaper3k
 
 This repository contains a simple web crawler implemented in Python, using the Newspaper3k library.
 
@@ -13,7 +12,8 @@ The crawler function can take either a single URL or a list of URLs and crawls e
 Python 3.6 or higher is required to use this crawler. You also need to install the Newspaper3k library, which can be done via pip:
 
 ```shell
-pip install newspaper3k
+pip install newspaper3k pandas pyyaml
+
 ```
 
 ## Usage 
