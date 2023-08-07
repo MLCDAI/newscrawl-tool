@@ -5,10 +5,11 @@ from typing import Union, List
 import yaml
 import nltk
 import argparse
-
+import logging
 
 class NewsCrawler:
     def __init__(self, yaml_file: str, output_dir='datasets'):
+        logging.info('Initializing NewsCrawler...')
         self.urls = []
         self.yaml_file = yaml_file
         self.output_dir = output_dir
@@ -19,12 +20,14 @@ class NewsCrawler:
             os.makedirs(self.output_dir)
 
     def read_urls_from_yaml(self):
+        logging.info('Reading URLs from YAML file...')
         with open(self.yaml_file, 'r') as file:
             data = yaml.safe_load(file)
             self.urls = data.get('input', [])
             self.history_urls = data.get('history', [])
 
     def crawl_news(self):
+        logging.info('Starting to crawl news...')
         data = []
         try:
             for url in self.urls:
@@ -48,8 +51,9 @@ class NewsCrawler:
             print(f"Failed to process url {url}. Error: {str(e)}")
 
         self.data = data
-
+        logging.info(f'Collected {len(self.data)} news.')
     def update_urls_to_yaml(self):
+        logging.info('Updating URLs to YAML file...')
         # Move input urls to history and sort
         self.history_urls += self.urls
         self.history_urls = sorted(list(set(self.history_urls)))
@@ -74,6 +78,7 @@ class NewsCrawler:
             print("No data to write. Use crawl_news method to get data.")
 
     def download_nltk_packages(self):
+        logging.info('Downloading necessary NLTK packages...')
         """
             Download necessary NLTK packages for Newspaper3k library.
         """
@@ -87,6 +92,7 @@ class NewsCrawler:
         print(f"Error during NLTK packages download: {str(e)}")
         
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     parser = argparse.ArgumentParser(description="NewsCrawler for extracting news article data.")
     
     # Add argument for the output CSV filename
@@ -96,9 +102,12 @@ if __name__ == "__main__":
     # Parse the arguments
     args = parser.parse_args()
     
+    
+    logging.info('Running NewsCrawler...')
     crawler = NewsCrawler('urls.yaml', 'my_datasets')
     #crawler.download_nltk_packages()
     crawler.read_urls_from_yaml()
     crawler.crawl_news()
     crawler.update_urls_to_yaml()
-    crawler.to_csv('args.output')
+    crawler.to_csv(args.output)
+    logging.info('NewsCrawler finished running.')
