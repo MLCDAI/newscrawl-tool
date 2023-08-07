@@ -14,3 +14,12 @@ Python 3.6 or higher is required to use this crawler. You also need to install t
 
 ```shell
 pip install newspaper3k
+```
+
+## Usage 
+```shell
+crawler = NewsCrawler(['https://example.com/news/article1', 'https://example.com/news/article2'], 'my_datasets')
+crawler.crawl_news()
+crawler.to_csv('output.csv')
+```
+
