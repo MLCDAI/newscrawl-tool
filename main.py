@@ -6,6 +6,36 @@ import yaml
 import nltk
 import argparse
 import logging
+import time
+import numpy as np 
+
+class Timer:
+    """Record multiple running times."""
+    def __init__(self):
+        """Defined in :numref:`sec_minibatch_sgd`"""
+        self.times = []
+        self.start()
+
+    def start(self):
+        """Start the timer."""
+        self.tik = time.time()
+
+    def stop(self):
+        """Stop the timer and record the time in a list."""
+        self.times.append(time.time() - self.tik)
+        return self.times[-1]
+
+    def avg(self):
+        """Return the average time."""
+        return sum(self.times) / len(self.times)
+
+    def sum(self):
+        """Return the sum of time."""
+        return sum(self.times)
+
+    def cumsum(self):
+        """Return the accumulated time."""
+        return np.array(self.times).cumsum().tolist()
 
 class NewsCrawler:
     def __init__(self, yaml_file: str, output_dir='datasets'):
@@ -102,7 +132,8 @@ if __name__ == "__main__":
     # Parse the arguments
     args = parser.parse_args()
     
-    
+    #
+    timer = Timer()
     logging.info('Running NewsCrawler...')
     crawler = NewsCrawler('urls.yaml', 'my_datasets')
     #crawler.download_nltk_packages()
@@ -110,4 +141,4 @@ if __name__ == "__main__":
     crawler.crawl_news()
     crawler.update_urls_to_yaml()
     crawler.to_csv(args.output)
-    logging.info('NewsCrawler finished running.')
+    logging.info(f'NewsCrawler finished running {timer.stop():.4f} sec.')

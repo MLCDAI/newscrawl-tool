@@ -29,8 +29,8 @@ The crawler function can take either a single URL or a list of URLs and crawls e
 |-------------|--------------|-----------------------|---------------------------------------------------|--------------------------------|--------|------------------|------------------------------------------------|-------------------------------|
 | ['Adeshola Ore'] | 2023-07-28   | "Victoria announces ban on gas connections to new homes from January 2024" | "This is a sample news article text..." | "https://example.com/image.jpg" | []     | ['change', 'states', 'energy', 'ban', 'victoria', 'announces', 'victorias', 'gas', 'connections', 'help', 'future', 'homes', '2024', 'changes'] | "This is a summary of the sample news article..." | "https://example.com/news/article1" |
 
-
-
+![logging output](/images/repo/image_3.png)
+![csv output](/images/repo/image_2.png)
 
 ## Usage 
 Insert news link or a list of news link into `urls.yaml` file.
