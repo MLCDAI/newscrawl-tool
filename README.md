@@ -6,6 +6,38 @@ This repository contains a simple web crawler implemented in Python, using the N
 ## Description
 
 The crawler function can take either a single URL or a list of URLs and crawls each one, extracting various attributes such as authors, publish date, headline, text, top image, movies, keywords, summary, and the link itself. The extracted data is returned as a list of dictionaries, where each dictionary corresponds to an article.
+## Features
+
+- Extracts a variety of attributes from each article:
+  - Authors
+  - Publish date
+  - Headline
+  - Text
+  - Image
+  - Movies (if any)
+  - Keywords
+  - Summary
+  - Link
+- Reads URLs from a YAML file, which can have separate sections for input and history URLs.
+- Stores crawled URLs in history section to avoid re-crawling in future runs.
+- Writes extracted data to a CSV file for further analysis.
+
+## Output 
+| authors     | publish_date | headline              | text                                              | image                          | movies | keywords         | summary                                        | link                          |
+|-------------|--------------|-----------------------|---------------------------------------------------|--------------------------------|--------|------------------|------------------------------------------------|-------------------------------|
+| ['John Doe'] | 2023-08-07   | "Sample Article Headline" | "This is a sample news article text..." | "https://example.com/image.jpg" | []     | ['sample', 'article', 'news'] | "This is a summary of the sample news article..." | "https://example.com/news/article1" |
+
+
+
+
+## Usage 
+```shell
+    crawler = NewsCrawler('urls.yaml', 'my_datasets')
+    crawler.read_urls_from_yaml()
+    crawler.crawl_news()
+    crawler.update_urls_to_yaml()
+    crawler.to_csv('example.csv')
+```
 
 ## Prerequisites
 
@@ -13,13 +45,4 @@ Python 3.6 or higher is required to use this crawler. You also need to install t
 
 ```shell
 pip install newspaper3k pandas pyyaml
-
 ```
-
-## Usage 
-```shell
-crawler = NewsCrawler(['https://example.com/news/article1', 'https://example.com/news/article2'], 'my_datasets')
-crawler.crawl_news()
-crawler.to_csv('output.csv')
-```
-
