@@ -23,20 +23,21 @@ The crawler function can take either a single URL or a list of URLs and crawls e
 - Writes extracted data to a CSV file for further analysis.
 
 ## Output 
+[News - Victoria announces ban on gas connections to new homes from January 2024](https://www.theguardian.com/australia-news/2023/jul/28/victoria-announces-ban-on-gas-connections-to-new-homes-from-january-2024)
+
 | authors     | publish_date | headline              | text                                              | image                          | movies | keywords         | summary                                        | link                          |
 |-------------|--------------|-----------------------|---------------------------------------------------|--------------------------------|--------|------------------|------------------------------------------------|-------------------------------|
-| ['John Doe'] | 2023-08-07   | "Sample Article Headline" | "This is a sample news article text..." | "https://example.com/image.jpg" | []     | ['sample', 'article', 'news'] | "This is a summary of the sample news article..." | "https://example.com/news/article1" |
+| ['Adeshola Ore'] | 2023-07-28   | "Victoria announces ban on gas connections to new homes from January 2024" | "This is a sample news article text..." | "https://example.com/image.jpg" | []     | ['change', 'states', 'energy', 'ban', 'victoria', 'announces', 'victorias', 'gas', 'connections', 'help', 'future', 'homes', '2024', 'changes'] | "This is a summary of the sample news article..." | "https://example.com/news/article1" |
 
 
 
 
 ## Usage 
+Insert news link or a list of news link into `urls.yaml` file.
+![Example](/images/repo/image_1.png)
 ```shell
-    crawler = NewsCrawler('urls.yaml', 'my_datasets')
-    crawler.read_urls_from_yaml()
-    crawler.crawl_news()
-    crawler.update_urls_to_yaml()
-    crawler.to_csv('example.csv')
+python main.py -o my_output.csv
+
 ```
 
 ## Prerequisites

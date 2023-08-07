@@ -3,6 +3,9 @@ import pandas as pd
 from newspaper import Article
 from typing import Union, List
 import yaml
+import nltk
+import argparse
+
 
 class NewsCrawler:
     def __init__(self, yaml_file: str, output_dir='datasets'):
@@ -70,9 +73,32 @@ class NewsCrawler:
         else:
             print("No data to write. Use crawl_news method to get data.")
 
+    def download_nltk_packages(self):
+        """
+            Download necessary NLTK packages for Newspaper3k library.
+        """
+    try:
+        nltk.download('punkt')
+        nltk.download('averaged_perceptron_tagger')
+        nltk.download('maxent_ne_chunker')
+        nltk.download('words')
+        print("NLTK packages downloaded successfully.")
+    except Exception as e:
+        print(f"Error during NLTK packages download: {str(e)}")
+        
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="NewsCrawler for extracting news article data.")
+    
+    # Add argument for the output CSV filename
+    parser.add_argument('--output', '-o', type=str, default='example.csv', 
+                        help='Name of the output CSV file. Default is "example.csv".')
+    
+    # Parse the arguments
+    args = parser.parse_args()
+    
     crawler = NewsCrawler('urls.yaml', 'my_datasets')
+    #crawler.download_nltk_packages()
     crawler.read_urls_from_yaml()
     crawler.crawl_news()
     crawler.update_urls_to_yaml()
-    crawler.to_csv('output.csv')
+    crawler.to_csv('args.output')
