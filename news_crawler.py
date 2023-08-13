@@ -41,6 +41,7 @@ class NewsCrawler:
     def __init__(self, yaml_file: str, output_dir='datasets'):
         logging.info('Initializing NewsCrawler...')
         self.urls = []
+        self.history_urls = []
         self.yaml_file = yaml_file
         self.output_dir = output_dir
         self._create_output_dir()
@@ -54,7 +55,7 @@ class NewsCrawler:
         with open(self.yaml_file, 'r') as file:
             data = yaml.safe_load(file)
             self.urls = data.get('input', [])
-            self.history_urls = data.get('history', [])
+            self.history_urls = data.get('history', []) if data.get('history') is not None else []
 
     def crawl_news(self):
         logging.info('Starting to crawl news...')
