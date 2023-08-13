@@ -36,10 +36,15 @@ The crawler function can take either a single URL or a list of URLs and crawls e
 Insert news link or a list of news link into `urls.yaml` file.
 ![Example](/images/repo/image_1.png)
 ```shell
+#python
 python main.py -o my_output.csv
 
 ```
 
+```shell
+#flask 
+python app.py
+```
 ## Prerequisites
 
 Python 3.6 or higher is required to use this crawler. You also need to install the Newspaper3k library, which can be done via pip:
