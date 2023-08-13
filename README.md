@@ -50,5 +50,5 @@ python app.py
 Python 3.6 or higher is required to use this crawler. You also need to install the a few library, which can be done via pip:
 
 ```shell
-pip: -r requirements.txt
+pip install -r requirements.txt
 ```
