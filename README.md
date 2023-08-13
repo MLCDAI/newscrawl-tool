@@ -26,11 +26,9 @@ The crawler function can take either a single URL or a list of URLs and crawls e
 
 - Test example: [News - Victoria announces ban on gas connections to new homes from January 2024](https://www.theguardian.com/australia-news/2023/jul/28/victoria-announces-ban-on-gas-connections-to-new-homes-from-january-2024)
 
-| authors     | publish_date | headline              | text                                              | image                          | movies | keywords         | summary                                        | link                          |
-|-------------|--------------|-----------------------|---------------------------------------------------|--------------------------------|--------|------------------|------------------------------------------------|-------------------------------|
-| ['Adeshola Ore'] | 2023-07-28   | "Victoria announces ban on gas connections to new homes from January 2024" | "This is a sample news article text..." | "https://example.com/image.jpg" | []     | ['change', 'states', 'energy', 'ban', 'victoria', 'announces', 'victorias', 'gas', 'connections', 'help', 'future', 'homes', '2024', 'changes'] | "This is a summary of the sample news article..." | "https://www.theguardian.com/australia-news/2023/jul/28/victoria-announces-ban-on-gas-connections-to-new-homes-from-january-2024"|
 
-- Finished in `0.3469 sec` <br>![logging output](/images/repo/image_3.png)
+
+- Demo <br>![logging output](/images/repo/image_flask.png)
 
 - CSV file output: <br>![csv output](/images/repo/image_2.png)
 
