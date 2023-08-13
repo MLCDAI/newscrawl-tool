@@ -1,13 +1,20 @@
+#built-in module
 import os
-import pandas as pd
-from newspaper import Article
-from typing import Union, List
-import yaml
-import nltk
-import argparse
-import logging
+import csv 
 import time
+import argparse
+import yaml
+import logging
+from datetime import datetime
+
+#data analysis module
 import numpy as np 
+import pandas as pd
+import nltk
+from typing import Union, List
+
+#necessary module
+from newspaper import Article
 
 class Timer:
     """Record multiple running times."""
@@ -83,6 +90,7 @@ class NewsCrawler:
 
         self.data = data
         logging.info(f'Collected {len(self.data)} news.')
+        
     def update_urls_to_yaml(self):
         logging.info('Updating URLs to YAML file...')
         # Move input urls to history and sort
@@ -99,14 +107,25 @@ class NewsCrawler:
         }
         with open(self.yaml_file, 'w') as file:
             yaml.dump(data, file, default_flow_style=False)
-
-    def to_csv(self, filename):
+    def to_index(self):
         if hasattr(self, 'data'):
+            df = pd.DataFrame(self.data)
+            rows = df.values.tolist()
+            filename = generate_filename()
+            df.to_csv(os.path.join("my_datasets", filename), index=False)
+            return rows, filename
+        else:
+            print("No data to write. Use crawl_news method to get data.")
+
+        
+    
+    
+    def to_csv(self, filename):
+        
             df = pd.DataFrame(self.data)
             file_path = os.path.join(self.output_dir, filename)
             df.to_csv(file_path, index=False)
-        else:
-            print("No data to write. Use crawl_news method to get data.")
+        
 
     def download_nltk_packages(self):
         logging.info('Downloading necessary NLTK packages...')
@@ -121,6 +140,21 @@ class NewsCrawler:
         print("NLTK packages downloaded successfully.")
     except Exception as e:
         print(f"Error during NLTK packages download: {str(e)}")
+
+
+
+def generate_filename():
+    current_time = datetime.now().strftime('%Y%m%d%H%M%S')
+    return f"news_{current_time}.csv"
+
+
+
+def save_data_to_csv(data, filename):
+    with open(os.path.join("my_datasets", filename), 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        for row in data:
+            writer.writerow(row)
+
         
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)

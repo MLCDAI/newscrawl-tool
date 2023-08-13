@@ -1,51 +1,62 @@
-from flask import Flask, Response, render_template, request, send_from_directory
-from news_crawler import NewsCrawler
-from flask_wtf import FlaskForm
-from wtforms import StringField, validators
 import os
+
+
 from dotenv import load_dotenv
 
+from flask import Flask, render_template,send_from_directory
+from flask_wtf import FlaskForm
+from wtforms import StringField, validators
+
+from news_crawler import NewsCrawler, Timer
+
+# 加载环境变量
 load_dotenv()
 
 app = Flask(__name__)
 os.environ['FLASK_DEBUG'] = '1'
-# Assuming you'd add this back later
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY')
 
+# 定义表单类
 class LinkForm(FlaskForm):
     link = StringField('Link', [validators.DataRequired()])
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = LinkForm()
-    crawler = NewsCrawler('urls.yaml', 'my_datasets')  # Define this outside the if block
-    show_table = True
     rows = []
+    elapsed_time = 0
+    filename = "default.csv"
+    
+
+    # 创建新闻爬虫实例
+    crawler = NewsCrawler('urls.yaml', 'my_datasets')
+    
     if form.validate_on_submit():
-        print("Form is validated.")
-        links = form.link.data.split(',')  # split by lines to support multiple links
+        links = [link.strip() for link in form.link.data.split(',')]
         for link in links:
-            print(f"Crawling: {link}")
-            crawler.urls.append(link.strip())
+            crawler.urls.append(link)
+
+        timer = Timer()
         crawler.crawl_news()
         crawler.update_urls_to_yaml()
+        
+        # Save the result data to CSV
+        rows,filename = crawler.to_index()  
+        print(filename)
 
-        filename = "news.csv"
-        crawler.to_csv(filename)
+        elapsed_time = "{:.4f}".format(timer.stop())
+    return render_template('index.html', form=form, 
+                           rows=rows, show_table=bool(rows), 
+                           filename = filename,
+                           elapsed_time=elapsed_time, 
+                           max_time=600)
 
-        # Reading the CSV to show in the HTML table
-        with open(os.path.join("my_datasets", filename), 'r') as file:
-            csv_data = file.read()
-        rows = [row.split(",") for row in csv_data.split("\n")]
-        if rows:
-            show_table = True
-    else:
-        print(form.errors)
-    return render_template('index.html', form=form, rows=rows, show_table=show_table)
+@app.route('/download-csv/<filename>')
+def download_csv(filename):
+    return send_from_directory('my_datasets', filename, as_attachment=True)
 
-@app.route('/download-csv')
-def download_csv():
-    return send_from_directory(directory='my_datasets', filename="news.csv", as_attachment=True)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8080, debug=True)

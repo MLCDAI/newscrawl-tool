@@ -1,51 +1,72 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Link to the external stylesheet -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>News Crawler Tool</title>
 </head>
+
 <body>
-<h2>Input Links for News Crawl</h2>
-<form action="/" method="post">
-    {{ form.hidden_tag() }}  <!-- This will include the CSRF token -->
-    <textarea name="link" rows="5" cols="50" placeholder="Input link or list of links separated by comma">{{ form.link.data }}</textarea><br>
-    <input type="submit" value="Submit">
-</form>
 
-{% if show_table %}
-<h2>Results:</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Authors</th>
-            <th>Publish Date</th>
-            <th>Headline</th>
-            <th>Text</th>
-            <th>Image</th>
-            <th>Movies</th>
-            <th>Keywords</th>
-            <th>Summary</th>
-            <th>Link</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for row in rows %}
-        <tr>
-            {% for cell in row %}
-            <td>{{ cell }}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<a href="/download-csv" class="download-btn">Download CSV</a>
 
-{% endif %}
 
+
+    <div class="container">
+        <h2>Input Links for News Crawl</h2>
+        <form action="/" method="post" class="form">
+            {{ form.hidden_tag() }}
+            <!-- CSRF token -->
+            <textarea class="input-box" name="link" rows="5" cols="50"
+                placeholder="Input link or list of links separated by comma">{{ form.link.data }}</textarea>
+            <input type="submit" value="Submit" class="submit-btn">
+        </form>
+
+        {% if show_table %}
+
+        <h2>Results:</h2>
+        {% if elapsed_time %}
+        <h3 class="mt-2">Total running time: {{ elapsed_time }} seconds out of max {{ max_time }} seconds.</h3>
+        {% endif %}
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th>Authors</th>
+                    <th>Publish Date</th>
+                    <th>Headline</th>
+                    <th>Text</th>
+                    <th>Image</th>
+                    <th>Movies</th>
+                    <th>Keywords</th>
+                    <th>Summary</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                <tr>
+                    <td>{{ row[0] }}</td> <!-- Authors -->
+                    <td>{{ row[1] }}</td> <!-- Publish Date -->
+                    <td>{{ row[2] }}</td> <!-- Headline -->
+                    <td>{{ row[3] }}</td> <!-- Text -->
+                   <!--  <td>{{ row[4] }}</td> Image -->
+                    <td><a href="{{ row[4] }}" target="_blank">{{ row[4] }}</a></td>
+                    <td>{{ row[5] }}</td> <!-- Movies -->
+                    <td>{{ row[6] }}</td> <!-- Keywords -->
+                    <td>{{ row[7] }}</td>
+                    <td><a href="{{ row[8] }}" target="_blank">{{ row[8] }}</a></td> <!-- Link， 加入link减缓了运行速度-->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="centered-content">
+            <a href="{{ url_for('download_csv', filename=filename) }}" class="download-btn">Download CSV</a>
+        </div>
+{% endif %}        
+</div>
 </body>
+
 </html>
