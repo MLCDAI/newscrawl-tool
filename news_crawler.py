@@ -136,6 +136,8 @@ if __name__ == "__main__":
     #
     timer = Timer()
     logging.info('Running NewsCrawler...')
+    
+    #输入数据写在urls.yaml里面， crawler接收link 然后穿出数据（字典形状）在70行， 或者一系列字典如果多个输入
     crawler = NewsCrawler('urls.yaml', 'my_datasets')
     #crawler.download_nltk_packages()
     crawler.read_urls_from_yaml()
