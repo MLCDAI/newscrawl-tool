@@ -47,8 +47,8 @@ python app.py
 ```
 ## Prerequisites
 
-Python 3.6 or higher is required to use this crawler. You also need to install the Newspaper3k library, which can be done via pip:
+Python 3.6 or higher is required to use this crawler. You also need to install the a few library, which can be done via pip:
 
 ```shell
-pip install newspaper3k pandas pyyaml
+pip: -r requirements.txt
 ```
